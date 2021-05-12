@@ -36,5 +36,9 @@
     "pixel_size_multiplier": {
         "x": 4.8,
         "y": 3.5
+    },
+    "historian": {
+        "folder": "C:/Users/wille/Desktop/python/historic_data/",
+        "file_prefix": "coordinates"
     }
 }

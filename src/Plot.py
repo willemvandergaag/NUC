@@ -1,48 +1,46 @@
 import cv2
 import matplotlib.pyplot as plt
-import time
 
 class Plot:
     def __init__(self, config):
-        self.config = config
-        self.backgroundImage = self.__loadBackgroundImage()
-        self.fig, self.ax = plt.subplots()
+        self.__config = config
+        self.__backgroundImage = self.__loadBackgroundImage()
+        self.__figure, self.ax = plt.subplots()
         self.__preparePlot()
 
     def __loadBackgroundImage(self):
-        imagePath = self.config.getImage('room')
+        imagePath = self.__config.getImage('room')
         # Read the image
         image = plt.imread(imagePath)
         # Resize the image
         image = cv2.resize(
-            image, (self.config.getRoomX(), self.config.getRoomY())
+            image, (self.__config.getRoomX(), self.__config.getRoomY())
         )
 
         return image
 
     def __preparePlot(self):
-        self.__createPlotFromBackgroundImage(self.backgroundImage)
+        self.__createPlotFromBackgroundImage(self.__backgroundImage)
         sensorLocations = self.__combineSensorLocations()
         self.__plotSensorLocations(sensorLocations)
         plt.show(block=False)
         plt.pause(0.1)
-        self.cachedBackground = self.fig.canvas.copy_from_bbox(self.fig.bbox)
+        self.cachedBackground = self.__figure.canvas.copy_from_bbox(self.__figure.bbox)
         # self.ax.draw_artist(self.ln)
-        self.fig.canvas.blit(self.fig.bbox)
+        self.__figure.canvas.blit(self.__figure.bbox)
 
-    def blit(self, objectList):
-        seperateList = self.__objectListToSeperateList(objectList)
+    def draw(self, seperateList):
         self.__plotHumans(seperateList)
-        self.fig.canvas.restore_region(self.cachedBackground)
+        self.__figure.canvas.restore_region(self.cachedBackground)
         self.ax.draw_artist(self.ln)
-        self.fig.canvas.blit(self.fig.bbox)
-        self.fig.canvas.flush_events()
+        self.__figure.canvas.blit(self.__figure.bbox)
+        self.__figure.canvas.flush_events()
 
     def __createPlotFromBackgroundImage(self, backgroundImage):
-        plt.imshow(backgroundImage, extent=[0, self.config.getRoomX(), 0, self.config.getRoomY()])
+        plt.imshow(backgroundImage, extent=[0, self.__config.getRoomX(), 0, self.__config.getRoomY()])
 
     def __combineSensorLocations(self):
-        locations = self.config.getSensorLocations()
+        locations = self.__config.getSensorLocations()
         sensorLocations = {
             'x': [],
             'y': []
@@ -63,18 +61,3 @@ class Plot:
             self.ln.set_visible(True)
         else:
             self.ln.set_visible(False)
-
-
-    def __objectListToSeperateList(self, objectList):
-        seperateLists = {}
-
-        for obj in objectList:
-            keys = [*obj]
-            for key in keys:
-                if(not key in seperateLists):
-                    seperateLists[key] = []
-
-                seperateLists[key].append(obj[key])
-
-        seperateList = seperateLists
-        return seperateLists

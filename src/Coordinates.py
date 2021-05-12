@@ -1,6 +1,6 @@
 class Coordinates:
     def __init__(self, config):
-        self.config = config
+        self.__config = config
 
     def removeDuplicates(self, sensorList):
         allXY = []
@@ -22,7 +22,7 @@ class Coordinates:
         return tempXY
 
     def __checkOverlap(self, allXY):
-        maxDifference = self.config.getMaxDifference()
+        maxDifference = self.__config.getMaxDifference()
         for coordinate in allXY:
             tempAllXY = allXY.copy()
             tempAllXY.remove(coordinate) # Remove itself
@@ -41,3 +41,17 @@ class Coordinates:
                     break
 
         return allXY
+
+    def objectListToSeperateList(self, objectList):
+        seperateLists = {}
+
+        for obj in objectList:
+            keys = [*obj]
+            for key in keys:
+                if(not key in seperateLists):
+                    seperateLists[key] = []
+
+                seperateLists[key].append(obj[key])
+
+        seperateList = seperateLists
+        return seperateLists

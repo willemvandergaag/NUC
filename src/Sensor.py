@@ -1,80 +1,80 @@
 class Sensor:
     def __init__(self, config):
-        self.config = config
-        self.id = 0
-        self.offsetX = 0
-        self.offsetY = 0
-        self.x = []
-        self.y = []
-        self.humans = 0
-        self.heatmaps = []
-        self.tempAlert = False
+        self.__config = config
+        self.__id = 0
+        self.__offsetX = 0
+        self.__offsetY = 0
+        self.__x = []
+        self.__y = []
+        self.__humans = 0
+        self.__heatmaps = []
+        self.__tempAlert = False
 
     def getOffsetX(self):
-        return self.offsetX
+        return self.__offsetX
     
     def setOffsetX(self, offset):
-        self.offsetX = self.__getLocationBySensorId()['x'] - offset
+        self.__offsetX = self.__getLocationBySensorId()['x'] - offset
 
     def getOffsetY(self):
-        return self.offsetY
+        return self.__offsetY
     
     def setOffsetY(self, offset):
-        self.offsetY = self.__getLocationBySensorId()['y'] + offset
+        self.__offsetY = self.__getLocationBySensorId()['y'] + offset
 
     def convertXPixelToCentimeters(self, pixelX):
         return (
-            self.getOffsetX() + (pixelX - 1) * self.config.getXMultiplier()
+            self.getOffsetX() + (pixelX - 1) * self.__config.getXMultiplier()
         )
     
     def __getLocationBySensorId(self):
-        locations = self.config.getSensorLocations()
+        locations = self.__config.getSensorLocations()
         for location in locations:
             if location['id'] == self.getId():
                 return location
 
     def convertYPixelToCentimeters(self, pixelY):
         return (
-            self.getOffsetY() - (pixelY - 1) * self.config.getYMultiplier()
+            self.getOffsetY() - (pixelY - 1) * self.__config.getYMultiplier()
         )
 
     def getX(self):
-        return self.x
+        return self.__x
 
     def appendToX(self, data):
-        self.x.append(
+        self.__x.append(
             self.convertXPixelToCentimeters(data)
         )
     
     def getY(self):
-        return self.y
+        return self.__y
     
     def appendToY(self, data):
-        self.y.append(
+        self.__y.append(
             self.convertYPixelToCentimeters(data)
         )
 
     def getHumans(self):
-        return self.humans
+        return self.__humans
 
     def setHumans(self, humans):
-        self.humans = humans
+        self.__humans = humans
 
     def getHeatmaps(self):
-        return self.heatmaps
+        return self.__heatmaps
 
     def setHeatmaps(self, data):
-        self.heatmaps.append(data)
+        self.__heatmaps.append(data)
 
     def getTempAlert(self):
-        return self.tempAlert
+        return self.__tempAlert
     
     def setTempAlert(self, data):
-        self.tempAlert = data
+        self.__tempAlert = data
 
     def getId(self):
-        return self.id
+        return self.__id
 
     def setId(self, id):
-        self.id = id
+        self.__id = id
     

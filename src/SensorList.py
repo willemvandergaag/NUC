@@ -3,8 +3,8 @@ from Sensor import Sensor
 
 class SensorList:
     def __init__(self, config):
-        self.config = config
-        self.sensors = {}
+        self.__config = config
+        self.__sensors = {}
     
     def __getTempAlert(self):
         return self.data['tempAlert']
@@ -35,10 +35,10 @@ class SensorList:
             sensor.appendToY(cluster['coordinates']['y'])
 
     def __appendToSensors(self, sensor):
-        self.sensors[sensor.getId()] = sensor
+        self.__sensors[sensor.getId()] = sensor
 
     def __getSensorFromMessage(self):
-        sensor = Sensor(self.config)
+        sensor = Sensor(self.__config)
 
         sensor.setId(self.__getId())
 
@@ -49,8 +49,8 @@ class SensorList:
         sensor.setHumans(self.__getHumans())
         sensor.setHeatmaps(self.__getHeatmaps())
 
-        sensor.setOffsetX(self.config.getSensorXOffset())
-        sensor.setOffsetY(self.config.getSensorYOffset())
+        sensor.setOffsetX(self.__config.getSensorXOffset())
+        sensor.setOffsetY(self.__config.getSensorYOffset())
 
         self.__populateX(sensor)
         self.__populateY(sensor)
@@ -58,10 +58,10 @@ class SensorList:
         return sensor
 
     def __appendToSensors(self, sensor):
-        self.sensors[sensor.getId()] = sensor
+        self.__sensors[sensor.getId()] = sensor
 
     def getSensors(self):
-        return self.sensors
+        return self.__sensors
 
     def addSensorFromMessage(self, message):
         messageJSON = json.loads(message)
