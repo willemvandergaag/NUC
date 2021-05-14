@@ -1,10 +1,10 @@
 import json
 from Sensor import Sensor
-import Config
 
 class SensorList:
-    def __init__(self, config: Config):
-        self.__config: Config = config
+    def __init__(self, sensorXOffset, sensorYOffset):
+        self.__sensorXOffset = sensorXOffset
+        self.__sensorYOffset = sensorYOffset
         self.__sensors = {}
     
     def __getTempAlert(self):
@@ -50,8 +50,8 @@ class SensorList:
         sensor.setHumans(self.__getHumans())
         sensor.setHeatmaps(self.__getHeatmaps())
 
-        sensor.setOffsetX(self.__config.getSensorXOffset())
-        sensor.setOffsetY(self.__config.getSensorYOffset())
+        sensor.setOffsetX(self.__sensorXOffset)
+        sensor.setOffsetY(self.__sensorYOffset)
 
         self.__populateX(sensor)
         self.__populateY(sensor)

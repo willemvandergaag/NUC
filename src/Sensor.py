@@ -1,8 +1,6 @@
-import Config
-
 class Sensor:
-    def __init__(self, config: Config):
-        self.__config: Config = config
+    def __init__(self, config):
+        self.__config = config
         self.__id = 0
         self.__offsetX = 0
         self.__offsetY = 0

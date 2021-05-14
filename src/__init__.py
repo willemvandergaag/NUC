@@ -1,5 +1,4 @@
 from Config import Config
-from Sensor import Sensor
 from Plot import Plot
 from SensorList import SensorList
 from Coordinates import Coordinates
@@ -10,10 +9,13 @@ import paho.mqtt.client as mqtt
 sensors = {}
 
 config = Config('config.json')
-plot = Plot(config)
-sensorList = SensorList(config)
-coordinates = Coordinates(config)
-historian = Historian(config)
+plot = Plot(config.getRoomX(), 
+            config.getRoomY(), 
+            config.getSensorLocations(), 
+            config.getImage('room'))
+sensorList = SensorList(config.getSensorXOffset(), config.getSensorOffsets())
+coordinates = Coordinates(config.getMaxDifference())
+historian = Historian(config.getHistorianFolder(), config.getHistorianFilePrefix())
 
 
 def on_connect(client, userdata, flags, rc):

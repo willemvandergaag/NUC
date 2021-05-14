@@ -1,22 +1,23 @@
-from Config import Config
 import cv2
 import matplotlib.pyplot as plt
-import Config
 
 class Plot:
-    def __init__(self, config: Config):
-        self.__config: Config = config
+    def __init__(self, roomX, roomY, sensorLocations, image):
+        self.__roomX = roomX
+        self.__roomY = roomY
+        self.__sensorLocations = sensorLocations
+        self.__image = image
         self.__backgroundImage = self.__loadBackgroundImage()
         self.__figure, self.ax = plt.subplots()
         self.__preparePlot()
 
     def __loadBackgroundImage(self):
-        imagePath = self.__config.getImage('room')
+        imagePath = self.__image
         # Read the image
         image = plt.imread(imagePath)
         # Resize the image
         image = cv2.resize(
-            image, (self.__config.getRoomX(), self.__config.getRoomY())
+            image, (self.__roomX, self.__roomY)
         )
 
         return image
@@ -39,10 +40,10 @@ class Plot:
         self.__figure.canvas.flush_events()
 
     def __createPlotFromBackgroundImage(self, backgroundImage):
-        plt.imshow(backgroundImage, extent=[0, self.__config.getRoomX(), 0, self.__config.getRoomY()])
+        plt.imshow(backgroundImage, extent=[0, self.__roomX, 0, self.__roomY])
 
     def __combineSensorLocations(self):
-        locations = self.__config.getSensorLocations()
+        locations = self.__sensorLocations()
         sensorLocations = {
             'x': [],
             'y': []

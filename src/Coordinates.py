@@ -1,10 +1,9 @@
-import Config
 import SensorList
 import Sensor
 
 class Coordinates:
-    def __init__(self, config: Config):
-        self.__config: Config = config
+    def __init__(self, maxDifference):
+        self.__maxDifference = maxDifference
 
     def removeDuplicates(self, sensorList: SensorList):
         allXY = []
@@ -26,7 +25,7 @@ class Coordinates:
         return tempXY
 
     def __checkOverlap(self, allXY):
-        maxDifference = self.__config.getMaxDifference()
+        maxDifference = self.__maxDifference
         for coordinate in allXY:
             tempAllXY = allXY.copy()
             tempAllXY.remove(coordinate) # Remove itself
