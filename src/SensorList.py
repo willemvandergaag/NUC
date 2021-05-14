@@ -1,9 +1,10 @@
 import json
 from Sensor import Sensor
+import Config
 
 class SensorList:
-    def __init__(self, config):
-        self.__config = config
+    def __init__(self, config: Config):
+        self.__config: Config = config
         self.__sensors = {}
     
     def __getTempAlert(self):

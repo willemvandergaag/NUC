@@ -1,8 +1,12 @@
-class Coordinates:
-    def __init__(self, config):
-        self.__config = config
+import Config
+import SensorList
+import Sensor
 
-    def removeDuplicates(self, sensorList):
+class Coordinates:
+    def __init__(self, config: Config):
+        self.__config: Config = config
+
+    def removeDuplicates(self, sensorList: SensorList):
         allXY = []
         for sensorId in sensorList:
             allXY = allXY + self.__getXYFromSensor(sensorList[sensorId])
@@ -10,7 +14,7 @@ class Coordinates:
         return self.__checkOverlap(allXY)
         
 
-    def __getXYFromSensor(self, sensor):
+    def __getXYFromSensor(self, sensor: Sensor):
         tempXY = []
 
         for i in range(0, len(sensor.getX())):

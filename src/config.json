@@ -1,0 +1,44 @@
+{
+    "room": {
+        "width": 300,
+        "length": 460
+    },
+    "sensors": {
+        "number": 2,
+        "offset": {
+            "x": 75.6,
+            "y": 40.75
+        },
+        "locations": [
+            {
+                "id": 1,
+                "x": 100,
+                "y": 325
+            },
+            {
+                "id": 2,
+                "x": 205,
+                "y": 325
+            }
+        ]
+    },
+    "humans": {
+        "max_offset": 40
+    },
+    "images": {
+        "room": "C:\\Users\\wille\\Desktop\\python\\maptoscale.jpg"
+    },
+    "mqtt": {
+        "ip": "192.168.0.107",
+        "port": 1883,
+        "topic": "17089689"
+    },
+    "pixel_size_multiplier": {
+        "x": 4.8,
+        "y": 3.5
+    },
+    "historian": {
+        "folder": "C:/Users/wille/Desktop/python/historic_data/",
+        "file_prefix": "coordinates"
+    }
+}

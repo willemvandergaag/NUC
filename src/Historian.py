@@ -2,9 +2,10 @@ from datetime import date
 import time
 import csv
 import os
+import Config
 
 class Historian:
-    def __init__(self, config):
+    def __init__(self, config: Config):
         self.__path = self.__constructFilePath(config.getHistorianFolder(), config.getHistorianFilePrefix())
         self.__current_date = None
         self.__field_names = ['x', 'y', 'timestamp']

@@ -1,9 +1,11 @@
+from Config import Config
 import cv2
 import matplotlib.pyplot as plt
+import Config
 
 class Plot:
-    def __init__(self, config):
-        self.__config = config
+    def __init__(self, config: Config):
+        self.__config: Config = config
         self.__backgroundImage = self.__loadBackgroundImage()
         self.__figure, self.ax = plt.subplots()
         self.__preparePlot()
