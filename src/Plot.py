@@ -4,7 +4,6 @@ import cv2
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
 
-
 class Plot:
     def __init__(self, roomX, roomY, sensorLocations, image, tempLimit):
         self.__roomX = roomX
@@ -35,19 +34,19 @@ class Plot:
         self.__createText()
         plt.show(block=False)
         plt.pause(0.1)
-        self.__cachedBackground = self.__figure.canvas.copy_from_bbox(
-            self.__figure.bbox)
+        self.__cachedBackground = self.__figure.canvas.copy_from_bbox(self.__figure.bbox)
         self.__figure.canvas.blit(self.__figure.bbox)
 
     def draw(self, seperateList, sensorList: SensorList):
         self.__plotHumans(seperateList)
         self.__writeHumanLocations(seperateList)
-        self.__drawTempWarnings(sensorList)
+        self.__drawTempAlerts(sensorList)
         self.__figure.canvas.restore_region(self.__cachedBackground)
-        if hasattr(self, '_' + self.__class__.__name__ + '__human'):
+        if hasattr(self, '_' + self.__class__.__name__ +  '__human'):
             self.__ax.draw_artist(self.__human)
             for location in self.__humanLocations:
                 self.__ax.draw_artist(location)
+        self.__ax.draw_artist(self.__tempAlerts)
         self.__figure.canvas.blit(self.__figure.bbox)
         self.__figure.canvas.flush_events()
 
@@ -68,16 +67,14 @@ class Plot:
         return sensorLocations
 
     def __plotSensorLocations(self, sensorLocations):
-        plt.plot(sensorLocations['x'],
-                 sensorLocations['y'], 'g.', markersize=8)
+        plt.plot(sensorLocations['x'], sensorLocations['y'], 'g.', markersize=8)
 
     def __plotHumans(self, seperateList):
         if(len(seperateList) > 0 and len(seperateList['x']) > 0):
-            (self.__human,) = self.__ax.plot(
-                seperateList['x'], seperateList['y'], 'bX', markersize=12, animated=True)
+            (self.__human,) = self.__ax.plot(seperateList['x'], seperateList['y'], 'bX', markersize=12, animated=True)
             self.__human.set_visible(True)
         else:
-            if hasattr(self, '_' + self.__class__.__name__ + '__human'):
+            if hasattr(self, '_' + self.__class__.__name__ +  '__human'):
                 self.__human.set_visible(False)
 
     def __writeHumanLocations(self, seperateList):
@@ -86,24 +83,25 @@ class Plot:
         self.__humanLocations = []
         for i_x, i_y in zip(seperateList['x'], seperateList['y']):
             self.__humanLocations.append(self.__ax.text(-220, 445 - (offsetText * 20), str(offsetText) +
-                                                        ': ' + '({}, {})'.format(int(i_x), int(i_y))))
+                 ': ' + '({}, {})'.format(int(i_x), int(i_y))))
             offsetText = offsetText + 1
 
     def __createLegend(self):
         legend_elements = [Line2D([0], [0], marker='X', color='w', label='Person',
-                                  markerfacecolor='b', markersize=15),
-                           Line2D([0], [0], marker='.', color='w', label='Sensor',
-                                  markerfacecolor='g', markersize=15),
-                           Line2D([0], [0], marker='8', color='w', label='Very hot object',
-                                  markerfacecolor='r', markersize=15)]
+                              markerfacecolor='b', markersize=15),
+                       Line2D([0], [0], marker='.', color='w', label='Sensor',
+                              markerfacecolor='g', markersize=15),
+                       Line2D([0], [0], marker='8', color='w', label='Very hot object',
+                              markerfacecolor='r', markersize=15)]
+
         plt.legend(handles=legend_elements, title='Symbols',
-                   bbox_to_anchor=(1.05, 1), loc='upper left')
+               bbox_to_anchor=(1.05, 1), loc='upper left')
 
     def __createText(self):
         # display list of locations
         plt.text(-250, 445, 'Locations of people', weight='bold')
 
-    def __createTempAlertList(self, sensorList):
+    def __createTempList(self, sensorList):
         allTemps = []
         for sensorId in sensorList:
             allTemps = allTemps + self.__getTempAlerts(sensorList[sensorId])
@@ -116,17 +114,17 @@ class Plot:
             'tempAlert': sensor.getTempAlert()
         }]
         return tempXY
-
-    def __detectTempAlerts(self, allTemps):
+    
+    def __compareTempAlerts(self, allTemps):
         sensorsDetectingTemp = []
         for sensor in allTemps:
             if sensor['tempAlert'] > self.__tempLimit:
                 sensorsDetectingTemp.append(sensor['id'])
         return sensorsDetectingTemp
 
-    def __drawTempWarnings(self, sensorList):
-        allTempLimits = self.__createTempAlertList(sensorList)
-        sensorsDetectingTemp = self.__detectTempAlerts(allTempLimits)
+    def __drawTempAlerts(self, sensorList):
+        allTempLimits = self.__createTempList(sensorList)
+        sensorsDetectingTemp = self.__compareTempAlerts(allTempLimits)
         tempWarningLocations = {
             'x': [],
             'y': []
@@ -141,5 +139,4 @@ class Plot:
 
     def __plotTempAlerts(self, tempWarningLocations):
         print(tempWarningLocations)
-        (self.__human,) = self.__ax.plot(
-            tempWarningLocations['x'], tempWarningLocations['y'], 'r8', markersize=12)
+        (self.__tempAlerts,) = self.__ax.plot(tempWarningLocations['x'], tempWarningLocations['y'], 'r8', markersize=12)    
