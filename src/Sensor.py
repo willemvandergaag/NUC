@@ -1,6 +1,8 @@
 class Sensor:
-    def __init__(self, config):
-        self.__config = config
+    def __init__(self, xMultiplier, yMultiplier, sensorLocations):
+        self.__xMultiplier = xMultiplier
+        self.__yMultiplier = yMultiplier
+        self.__sensorLocations = sensorLocations
         self.__id = 0
         self.__offsetX = 0
         self.__offsetY = 0
@@ -8,7 +10,7 @@ class Sensor:
         self.__y = []
         self.__humans = 0
         self.__heatmaps = []
-        self.__tempAlert = False
+        self.__tempAlert = 0
 
     def getOffsetX(self):
         return self.__offsetX
@@ -24,18 +26,18 @@ class Sensor:
 
     def convertXPixelToCentimeters(self, pixelX):
         return (
-            self.getOffsetX() + (pixelX - 1) * self.__config.getXMultiplier()
+            self.getOffsetX() + (pixelX - 1) * self.__xMultiplier
         )
     
     def __getLocationBySensorId(self):
-        locations = self.__config.getSensorLocations()
+        locations = self.__sensorLocations
         for location in locations:
             if location['id'] == self.getId():
                 return location
 
     def convertYPixelToCentimeters(self, pixelY):
         return (
-            self.getOffsetY() - (pixelY - 1) * self.__config.getYMultiplier()
+            self.getOffsetY() - (pixelY - 1) * self.__yMultiplier
         )
 
     def getX(self):
@@ -64,7 +66,7 @@ class Sensor:
         return self.__heatmaps
 
     def setHeatmaps(self, data):
-        self.__heatmaps.append(data)
+        self.__heatmaps = data
 
     def getTempAlert(self):
         return self.__tempAlert

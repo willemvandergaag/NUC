@@ -1,5 +1,6 @@
 import json
 
+
 class Config:
     def __init__(self, file):
         self.__config = {}
@@ -34,8 +35,10 @@ class Config:
     def getSensorOffsets(self, sensorId):
         # Sensors have a name from 1 upwards, arrays are 0-indexed
         sensorId = sensorId - 1
-        offsetX = self.__config['locations'][sensorId]['x'] - self.getSensorXOffset()
-        offsetY = self.__config['locations'][sensorId]['y'] + self.getSensorYOffset()
+        offsetX = self.__config['locations'][sensorId]['x'] - \
+            self.getSensorXOffset()
+        offsetY = self.__config['locations'][sensorId]['y'] + \
+            self.getSensorYOffset()
 
         return {
             'offsetX': offsetX,
@@ -50,7 +53,7 @@ class Config:
 
     def getMqttPort(self):
         return self.__config['mqtt']['port']
-    
+
     def getMqttTopic(self):
         return self.__config['mqtt']['topic']
 
@@ -68,3 +71,9 @@ class Config:
 
     def getHistorianFilePrefix(self):
         return self.__config['historian']['file_prefix']
+
+    def getAverageHeatmapTemp(self):
+        return self.__config['heatmap']['average temp']
+
+    def getTempLimit(self):
+        return self.__config['tempWarning']['maxTemp']

@@ -3,11 +3,13 @@ import time
 import csv
 import os
 
+
 class Historian:
     def __init__(self, historianFolder, historianFilePrefix):
         self.__historianFolder = historianFolder
         self.__historianFilePrefix = historianFilePrefix
-        self.__path = self.__constructFilePath(self.__historianFolder, self.__historianFilePrefix)
+        self.__path = self.__constructFilePath(
+            self.__historianFolder, self.__historianFilePrefix)
         self.__current_date = None
         self.__field_names = ['x', 'y', 'timestamp']
 
@@ -21,15 +23,16 @@ class Historian:
     def __writeHeader(self):
 
         with open(self.__path, 'w',  newline='') as historianFile:
-            writer = csv.DictWriter(historianFile, fieldnames=self.__field_names)
+            writer = csv.DictWriter(
+                historianFile, fieldnames=self.__field_names)
             writer.writeheader()
-            historianFile.close()        
+            historianFile.close()
 
-    def writeCoordinatesToFile(self, x ,y):
+    def writeCoordinatesToFile(self, x, y):
         if self.__current_date != self.__getCurrentDateAsString():
             self.__writeHeader()
             self.__current_date = self.__getCurrentDateAsString()
-        
+
         coordinatesObject = {
             'x': x,
             'y': y,
@@ -37,6 +40,7 @@ class Historian:
         }
 
         with open(self.__path, 'a', newline='') as historianFile:
-            writer = csv.DictWriter(historianFile, fieldnames=self.__field_names)
+            writer = csv.DictWriter(
+                historianFile, fieldnames=self.__field_names)
             writer.writerow(coordinatesObject)
             historianFile.close()

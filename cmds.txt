@@ -1,0 +1,5 @@
+dot -Tpng combined.dot > abc.png
+
+pyreverse C:\Users\wille\Desktop\NUC\src -f ALL .
+
+pyreverse -o png -p NUC -f ALL .

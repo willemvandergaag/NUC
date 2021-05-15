@@ -40,5 +40,11 @@
     "historian": {
         "folder": "C:/Users/wille/Desktop/python/historic_data/",
         "file_prefix": "coordinates"
+    },
+    "heatmap": {
+        "average temp": 21
+    },
+    "tempWarning": {
+        "maxTemp": 80
     }
 }
