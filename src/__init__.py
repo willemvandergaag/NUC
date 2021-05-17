@@ -16,7 +16,8 @@ plot = Plot(config.getRoomX(),
             config.getImage('room'),
             config.getTempLimit(),
             config.getOpeningTime(),
-            config.getClosingTime())
+            config.getClosingTime(),
+            config.getSocialDistancing())
 sensorList = SensorList(config.getSensorXOffset(),
                         config.getSensorYOffset(),
                         config.getXMultiplier(),
@@ -24,7 +25,8 @@ sensorList = SensorList(config.getSensorXOffset(),
                         config.getSensorLocations())
 coordinates = Coordinates(config.getMaxDifference())
 historian = Historian(config.getHistorianFolder(),
-                      config.getHistorianFilePrefix())
+                      config.getHistorianFilePrefix(),
+                      config.getHistorianHeaders())
 heatmap = Heatmap(config.getAverageHeatmapTemp(),
                   config.getRoomX(),
                   config.getRoomY(),
@@ -41,16 +43,16 @@ def on_message(client, userdata, message):
     try:
         # Get a sensor from the message and put it in a list
         sensorList.addSensorFromMessage(message.payload)
-        print(message.payload)
-        print()
     except:
         return
 
+    coordinatesWithoutDuplicates = coordinates.removeDuplicates(
+        sensorList.getSensors()
+    )
+
     # Remove duplicates
     coordinatesToPlot = coordinates.objectListToSeperateList(
-        coordinates.removeDuplicates(
-            sensorList.getSensors()
-        )
+        coordinatesWithoutDuplicates
     )
 
     # Draw the image
@@ -61,10 +63,11 @@ def on_message(client, userdata, message):
 
     try:
         # Write to the historian
-        plotX = coordinatesToPlot['x']
-        plotY = coordinatesToPlot['y']
-        for x, y in zip(plotX, plotY):
-            historian.writeCoordinatesToFile(x, y)
+        for sensor in coordinatesWithoutDuplicates:
+            plotX = sensor['x']
+            plotY = sensor['y']
+            id = sensor['id']
+            historian.writeCoordinatesToFile(id, plotX, plotY)
     except:
         pass
 

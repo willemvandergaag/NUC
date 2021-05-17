@@ -19,6 +19,7 @@ class Coordinates:
             tempXY.append({
                 'x': sensor.getX()[i],
                 'y': sensor.getY()[i],
+                'id': sensor.getId(),
                 'heatmaps': sensor.getHeatmaps()[0][i]
             })
 

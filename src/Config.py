@@ -71,6 +71,9 @@ class Config:
 
     def getHistorianFilePrefix(self):
         return self.__config['historian']['file_prefix']
+    
+    def getHistorianHeaders(self):
+        return self.__config['historian']['headerFields']
 
     def getAverageHeatmapTemp(self):
         return self.__config['heatmap']['average temp']
@@ -83,3 +86,6 @@ class Config:
 
     def getClosingTime(self):
         return self.__config["openingHours"]["closingTime"]
+
+    def getSocialDistancing(self):
+        return self.__config["socialDistancing"]["minDistance"]

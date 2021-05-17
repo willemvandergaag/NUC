@@ -7,7 +7,7 @@ from matplotlib.lines import Line2D
 from datetime import datetime
 
 class Plot:
-    def __init__(self, roomX, roomY, sensorLocations, image, tempLimit, getOpeningTime, getClosingTime):
+    def __init__(self, roomX, roomY, sensorLocations, image, tempLimit, getOpeningTime, getClosingTime, getSocialDistancing):
         self.__roomX = roomX
         self.__roomY = roomY
         self.__sensorLocations = sensorLocations
@@ -15,6 +15,7 @@ class Plot:
         self.__tempLimit = tempLimit
         self.__getOpeningTime = getOpeningTime
         self.__getClosingTime = getClosingTime
+        self.__getSocialDistancing = getSocialDistancing
         self.__backgroundImage = self.__loadBackgroundImage()
         self.__figure, self.__ax = plt.subplots()
         self.__preparePlot()
@@ -167,12 +168,12 @@ class Plot:
                 xDistance = abs(testCoordinate['x'] - coordinate['x'])
                 yDistance = abs(testCoordinate['y'] - coordinate['y'])
                 XYdistance = int(math.sqrt(xDistance * xDistance + yDistance * yDistance))
-                if XYdistance < 150:
-                    self.__humanDistances.append(self.__ax.text(-220, 240 - (rowNumber * 20), str(coordinateNumber) +
-                                                                ' & ' + str(compareNumber) + ' = ' + str(XYdistance), color = 'red'))
-                else:
-                    self.__humanDistances.append(self.__ax.text(-220, 240 - (rowNumber * 20), str(coordinateNumber) +
-                                                                ' & ' + str(compareNumber) + ' = ' + str(XYdistance)))
+                textColor = 'black'
+                if XYdistance < self.__getSocialDistancing:
+                    textColor = 'red'
+                    
+                self.__humanDistances.append(self.__ax.text(-220, 240 - (rowNumber * 20), str(coordinateNumber) +
+                                                            ' & ' + str(compareNumber) + ' = ' + str(XYdistance), color = textColor))
                 compareNumber += 1
                 rowNumber += 1
             allCoordinates.remove(coordinate)

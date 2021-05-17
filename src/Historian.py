@@ -5,13 +5,13 @@ import os
 
 
 class Historian:
-    def __init__(self, historianFolder, historianFilePrefix):
+    def __init__(self, historianFolder, historianFilePrefix, headerFields):
         self.__historianFolder = historianFolder
         self.__historianFilePrefix = historianFilePrefix
         self.__path = self.__constructFilePath(
             self.__historianFolder, self.__historianFilePrefix)
         self.__current_date = None
-        self.__field_names = ['x', 'y', 'timestamp']
+        self.__field_names = headerFields
 
     def __constructFilePath(self, folder, file_prefix):
         filename = file_prefix + '-' + self.__getCurrentDateAsString() + '.csv'
@@ -28,12 +28,13 @@ class Historian:
             writer.writeheader()
             historianFile.close()
 
-    def writeCoordinatesToFile(self, x, y):
+    def writeCoordinatesToFile(self, sensorId, x, y):
         if self.__current_date != self.__getCurrentDateAsString():
             self.__writeHeader()
             self.__current_date = self.__getCurrentDateAsString()
 
         coordinatesObject = {
+            'id': sensorId,
             'x': x,
             'y': y,
             'timestamp': time.time()

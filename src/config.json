@@ -39,7 +39,8 @@
     },
     "historian": {
         "folder": "C:/Users/wille/Desktop/python/historic_data/",
-        "file_prefix": "coordinates"
+        "file_prefix": "coordinates",
+        "headerFields": ["id", "x", "y", "timestamp"]
     },
     "heatmap": {
         "average temp": 21
@@ -50,5 +51,8 @@
     "openingHours":{
         "closingTime": 17,
         "openingTime": 9
+    },
+    "socialDistancing":{
+        "minDistance": 150
     }
 }
