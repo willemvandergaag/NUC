@@ -1,16 +1,20 @@
 from SensorList import SensorList
 from Sensor import Sensor
 import cv2
+import math
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
+from datetime import datetime
 
 class Plot:
-    def __init__(self, roomX, roomY, sensorLocations, image, tempLimit):
+    def __init__(self, roomX, roomY, sensorLocations, image, tempLimit, getOpeningTime, getClosingTime):
         self.__roomX = roomX
         self.__roomY = roomY
         self.__sensorLocations = sensorLocations
         self.__image = image
         self.__tempLimit = tempLimit
+        self.__getOpeningTime = getOpeningTime
+        self.__getClosingTime = getClosingTime
         self.__backgroundImage = self.__loadBackgroundImage()
         self.__figure, self.__ax = plt.subplots()
         self.__preparePlot()
@@ -41,11 +45,16 @@ class Plot:
         self.__plotHumans(seperateList)
         self.__writeHumanLocations(seperateList)
         self.__drawTempAlerts(sensorList)
+        self.__measureDistancesHumans(seperateList)
         self.__figure.canvas.restore_region(self.__cachedBackground)
         if hasattr(self, '_' + self.__class__.__name__ +  '__human'):
             self.__ax.draw_artist(self.__human)
             for location in self.__humanLocations:
                 self.__ax.draw_artist(location)
+            for distance in self.__humanDistances:
+                self.__ax.draw_artist(distance)
+            if self.__checkAfterhours():
+                self.__ax.draw_artist(self.__AfterhoursWarning)
         self.__ax.draw_artist(self.__tempAlerts)
         self.__figure.canvas.blit(self.__figure.bbox)
         self.__figure.canvas.flush_events()
@@ -100,8 +109,9 @@ class Plot:
     def __createText(self):
         # display list of locations
         plt.text(-250, 445, 'Locations of people', weight='bold')
+        plt.text(-250, 240, 'Distance', weight='bold')        
 
-    def __createTempList(self, sensorList):
+    def __createTempAlertList(self, sensorList):
         allTemps = []
         for sensorId in sensorList:
             allTemps = allTemps + self.__getTempAlerts(sensorList[sensorId])
@@ -123,7 +133,7 @@ class Plot:
         return sensorsDetectingTemp
 
     def __drawTempAlerts(self, sensorList):
-        allTempLimits = self.__createTempList(sensorList)
+        allTempLimits = self.__createTempAlertList(sensorList)
         sensorsDetectingTemp = self.__compareTempAlerts(allTempLimits)
         tempWarningLocations = {
             'x': [],
@@ -138,5 +148,51 @@ class Plot:
         self.__plotTempAlerts(tempWarningLocations)
 
     def __plotTempAlerts(self, tempWarningLocations):
-        print(tempWarningLocations)
-        (self.__tempAlerts,) = self.__ax.plot(tempWarningLocations['x'], tempWarningLocations['y'], 'r8', markersize=12)    
+        (self.__tempAlerts,) = self.__ax.plot(tempWarningLocations['x'], tempWarningLocations['y'], 'r8', markersize=12) 
+
+    def __measureDistancesHumans(self, seperateList):
+        allCoordinates = self.__mergeCoordinatesToArray(seperateList)
+        self.__calculateDistances(allCoordinates)
+
+    def __calculateDistances(self, allCoordinates):
+        coordinateNumber = 1
+        self.__humanDistances = []
+        rowNumber = 1
+        for coordinate in allCoordinates:
+            compareNumber = coordinateNumber + 1
+            tempCoordinates = allCoordinates.copy()
+            tempCoordinates.remove(coordinate)
+
+            for testCoordinate in tempCoordinates:
+                xDistance = abs(testCoordinate['x'] - coordinate['x'])
+                yDistance = abs(testCoordinate['y'] - coordinate['y'])
+                XYdistance = int(math.sqrt(xDistance * xDistance + yDistance * yDistance))
+                if XYdistance < 150:
+                    self.__humanDistances.append(self.__ax.text(-220, 240 - (rowNumber * 20), str(coordinateNumber) +
+                                                                ' & ' + str(compareNumber) + ' = ' + str(XYdistance), color = 'red'))
+                else:
+                    self.__humanDistances.append(self.__ax.text(-220, 240 - (rowNumber * 20), str(coordinateNumber) +
+                                                                ' & ' + str(compareNumber) + ' = ' + str(XYdistance)))
+                compareNumber += 1
+                rowNumber += 1
+            allCoordinates.remove(coordinate)
+            coordinateNumber += 1
+        
+    def __mergeCoordinatesToArray(self, seperateList):
+        allCoordinates = []
+        for i_x, i_y in zip(seperateList['x'], seperateList['y']):
+            allCoordinates.append({
+                'x': i_x,
+                'y': i_y
+            })
+        return allCoordinates
+
+    def __checkAfterhours(self):
+        # Returns a datetime object containing the local date and time
+        dateTimeObj = datetime.now()
+        if dateTimeObj.hour >= self.__getClosingTime or dateTimeObj.hour < self.__getOpeningTime:
+            self.__AfterhoursWarning = self.__ax.text(335, 100, 'Person detected\nafter hours!', weight = 'bold', color = 'red', 
+                            bbox=dict(facecolor='none', edgecolor='red'))
+            return True
+        else: 
+            return False

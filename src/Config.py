@@ -77,3 +77,9 @@ class Config:
 
     def getTempLimit(self):
         return self.__config['tempWarning']['maxTemp']
+
+    def getOpeningTime(self):
+        return self.__config["openingHours"]["openingTime"]
+
+    def getClosingTime(self):
+        return self.__config["openingHours"]["closingTime"]

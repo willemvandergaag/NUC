@@ -14,7 +14,9 @@ plot = Plot(config.getRoomX(),
             config.getRoomY(),
             config.getSensorLocations(),
             config.getImage('room'),
-            config.getTempLimit())
+            config.getTempLimit(),
+            config.getOpeningTime(),
+            config.getClosingTime())
 sensorList = SensorList(config.getSensorXOffset(),
                         config.getSensorYOffset(),
                         config.getXMultiplier(),
@@ -39,6 +41,8 @@ def on_message(client, userdata, message):
     try:
         # Get a sensor from the message and put it in a list
         sensorList.addSensorFromMessage(message.payload)
+        print(message.payload)
+        print()
     except:
         return
 
@@ -72,5 +76,6 @@ client.connect(
     config.getMqttIp(),
     config.getMqttPort()
 )
+
 
 client.loop_forever()
