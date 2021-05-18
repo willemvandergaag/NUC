@@ -3,17 +3,21 @@ charset="utf-8"
 rankdir=BT
 "0" [label="Config", shape="box"];
 "1" [label="Coordinates", shape="box"];
-"2" [label="Historian", shape="box"];
-"3" [label="Plot", shape="box"];
-"4" [label="Sensor", shape="box"];
-"5" [label="SensorList", shape="box"];
-"6" [label="__init__", shape="box"];
-"1" -> "4" [arrowhead="open", arrowtail="none"];
+"2" [label="Heatmap", shape="box"];
+"3" [label="Historian", shape="box"];
+"4" [label="Plot", shape="box"];
+"5" [label="Sensor", shape="box"];
+"6" [label="SensorList", shape="box"];
+"7" [label="__init__", shape="box"];
 "1" -> "5" [arrowhead="open", arrowtail="none"];
-"5" -> "4" [arrowhead="open", arrowtail="none"];
-"6" -> "0" [arrowhead="open", arrowtail="none"];
-"6" -> "1" [arrowhead="open", arrowtail="none"];
-"6" -> "2" [arrowhead="open", arrowtail="none"];
-"6" -> "3" [arrowhead="open", arrowtail="none"];
+"1" -> "6" [arrowhead="open", arrowtail="none"];
+"4" -> "5" [arrowhead="open", arrowtail="none"];
+"4" -> "6" [arrowhead="open", arrowtail="none"];
 "6" -> "5" [arrowhead="open", arrowtail="none"];
+"7" -> "0" [arrowhead="open", arrowtail="none"];
+"7" -> "1" [arrowhead="open", arrowtail="none"];
+"7" -> "2" [arrowhead="open", arrowtail="none"];
+"7" -> "3" [arrowhead="open", arrowtail="none"];
+"7" -> "4" [arrowhead="open", arrowtail="none"];
+"7" -> "6" [arrowhead="open", arrowtail="none"];
 }

@@ -1,5 +1,5 @@
-import SensorList
-import Sensor
+from SensorList import SensorList
+from Sensor import Sensor
 
 
 class Coordinates:

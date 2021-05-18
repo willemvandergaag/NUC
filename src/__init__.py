@@ -46,8 +46,10 @@ def on_message(client, userdata, message):
     except:
         return
 
+    allSensors = sensorList.getSensors()
+    
     coordinatesWithoutDuplicates = coordinates.removeDuplicates(
-        sensorList.getSensors()
+        allSensors
     )
 
     # Remove duplicates
@@ -56,7 +58,7 @@ def on_message(client, userdata, message):
     )
 
     # Draw the image
-    plot.draw(coordinatesToPlot, sensorList.getSensors())
+    plot.draw(coordinatesToPlot, allSensors)
 
     # Display heatmap
     heatmap.createHeatmap(coordinatesToPlot)

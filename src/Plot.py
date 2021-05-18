@@ -1,4 +1,3 @@
-from SensorList import SensorList
 from Sensor import Sensor
 import cv2
 import math
@@ -42,7 +41,7 @@ class Plot:
         self.__cachedBackground = self.__figure.canvas.copy_from_bbox(self.__figure.bbox)
         self.__figure.canvas.blit(self.__figure.bbox)
 
-    def draw(self, seperateList, sensorList: SensorList):
+    def draw(self, seperateList, sensorList):
         self.__plotHumans(seperateList)
         self.__writeHumanLocations(seperateList)
         self.__drawTempAlerts(sensorList)
@@ -55,7 +54,7 @@ class Plot:
             for distance in self.__humanDistances:
                 self.__ax.draw_artist(distance)
             if self.__checkAfterhours():
-                self.__ax.draw_artist(self.__AfterhoursWarning)
+                self.__ax.draw_artist(self.__afterhoursWarning)
         self.__ax.draw_artist(self.__tempAlerts)
         self.__figure.canvas.blit(self.__figure.bbox)
         self.__figure.canvas.flush_events()
@@ -192,7 +191,7 @@ class Plot:
         # Returns a datetime object containing the local date and time
         dateTimeObj = datetime.now()
         if dateTimeObj.hour >= self.__getClosingTime or dateTimeObj.hour < self.__getOpeningTime:
-            self.__AfterhoursWarning = self.__ax.text(335, 100, 'Person detected\nafter hours!', weight = 'bold', color = 'red', 
+            self.__afterhoursWarning = self.__ax.text(335, 100, 'Person detected\nafter hours!', weight = 'bold', color = 'red', 
                             bbox=dict(facecolor='none', edgecolor='red'))
             return True
         else: 
