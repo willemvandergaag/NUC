@@ -73,3 +73,4 @@ class SensorList:
         self.__appendToSensors(
             self.__getSensorFromMessage()
         )
+        return self.getSensors()

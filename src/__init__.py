@@ -42,12 +42,10 @@ def on_connect(client, userdata, flags, rc):
 def on_message(client, userdata, message):
     try:
         # Get a sensor from the message and put it in a list
-        sensorList.addSensorFromMessage(message.payload)
+        allSensors = sensorList.addSensorFromMessage(message.payload)
     except:
         return
 
-    allSensors = sensorList.getSensors()
-    
     coordinatesWithoutDuplicates = coordinates.removeDuplicates(
         allSensors
     )
