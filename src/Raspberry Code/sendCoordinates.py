@@ -11,7 +11,7 @@ import paho.mqtt.publish as publish
 import json
 
 config = json.load(
-    open('config.json')
+    open('/home/pi/Desktop/config.json')
     )
 
 sensor = config['sensorId']
