@@ -1,0 +1,15 @@
+{
+    "sensorId": 1,
+    "sensorPixels":{
+        "width": 24,
+        "height": 32
+    },
+    "humanTemps":{
+        "upperLimit": 31,
+        "lowerLimit": 24
+    },
+    "areaLimits":{
+        "lowerLimit": 45,
+        "upperLimit": 70
+    }
+}
