@@ -12,7 +12,6 @@ rankdir=BT
 "1" -> "5" [arrowhead="open", arrowtail="none"];
 "1" -> "6" [arrowhead="open", arrowtail="none"];
 "4" -> "5" [arrowhead="open", arrowtail="none"];
-"4" -> "6" [arrowhead="open", arrowtail="none"];
 "6" -> "5" [arrowhead="open", arrowtail="none"];
 "7" -> "0" [arrowhead="open", arrowtail="none"];
 "7" -> "1" [arrowhead="open", arrowtail="none"];

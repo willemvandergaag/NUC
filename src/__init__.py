@@ -8,7 +8,7 @@ from Heatmap import Heatmap
 import paho.mqtt.client as mqtt
 
 sensors = {}
-
+# config file
 config = Config('config.json')
 plot = Plot(config.getRoomX(),
             config.getRoomY(),
@@ -75,6 +75,8 @@ def on_message(client, userdata, message):
 client = mqtt.Client()
 client.on_connect = on_connect
 client.on_message = on_message
+
+# connect to broker
 client.connect(
     config.getMqttIp(),
     config.getMqttPort()

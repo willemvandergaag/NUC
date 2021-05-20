@@ -8,7 +8,7 @@ class Config:
         self.__openFileToJSON(file)
 
     # Opens a configuration file
-    # @return a JSON object
+    # return a JSON object
     def __openFileToJSON(self, file):
         self.__config = json.load(
             open(file)
@@ -39,7 +39,7 @@ class Config:
             self.getSensorXOffset()
         offsetY = self.__config['locations'][sensorId]['y'] + \
             self.getSensorYOffset()
-
+        # the offset is used for the location in the room
         return {
             'offsetX': offsetX,
             'offsetY': offsetY
@@ -71,7 +71,7 @@ class Config:
 
     def getHistorianFilePrefix(self):
         return self.__config['historian']['file_prefix']
-    
+
     def getHistorianHeaders(self):
         return self.__config['historian']['headerFields']
 

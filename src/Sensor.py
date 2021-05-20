@@ -14,13 +14,13 @@ class Sensor:
 
     def getOffsetX(self):
         return self.__offsetX
-    
+
     def setOffsetX(self, offset):
         self.__offsetX = self.__getLocationBySensorId()['x'] - offset
 
     def getOffsetY(self):
         return self.__offsetY
-    
+
     def setOffsetY(self, offset):
         self.__offsetY = self.__getLocationBySensorId()['y'] + offset
 
@@ -28,14 +28,16 @@ class Sensor:
         return (
             self.getOffsetX() + (pixelX - 1) * self.__xMultiplier
         )
-    
+
     def __getLocationBySensorId(self):
+        # return the location with a sensor is
         locations = self.__sensorLocations
         for location in locations:
             if location['id'] == self.getId():
                 return location
 
     def convertYPixelToCentimeters(self, pixelY):
+        #  convert a pixel of the sensor to cm
         return (
             self.getOffsetY() - (pixelY - 1) * self.__yMultiplier
         )
@@ -47,10 +49,10 @@ class Sensor:
         self.__x.append(
             self.convertXPixelToCentimeters(data)
         )
-    
+
     def getY(self):
         return self.__y
-    
+
     def appendToY(self, data):
         self.__y.append(
             self.convertYPixelToCentimeters(data)
@@ -70,7 +72,7 @@ class Sensor:
 
     def getTempAlert(self):
         return self.__tempAlert
-    
+
     def setTempAlert(self, data):
         self.__tempAlert = data
 
@@ -79,4 +81,3 @@ class Sensor:
 
     def setId(self, id):
         self.__id = id
-    

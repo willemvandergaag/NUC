@@ -25,7 +25,6 @@ class SensorList:
 
     def __getHeatmaps(self):
         heatmapsTemp = []
-
         for cluster in self.__getClusters():
             heatmapsTemp.append(cluster['heatmaps'])
 
@@ -43,6 +42,7 @@ class SensorList:
         self.__sensors[sensor.getId()] = sensor
 
     def __getSensorFromMessage(self):
+        # get all sensor values from a message
         sensor = Sensor(self.__xMultiplier, self.__yMultiplier,
                         self.__sensorLocations)
 

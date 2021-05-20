@@ -13,9 +13,11 @@ class Heatmap:
         self.__yMultiplier = yMultiplier
 
     def __createEmptyMap(self):
+        # create an array the size of the room filles with the average temp
         heatmapArray = [self.__averageHeatmapTemp] * \
             (self.__roomX * self.__roomY)
         heatmapArray = np.asarray(heatmapArray)
+        # resize the array
         heatmapArray = heatmapArray.reshape(self.__roomY, self.__roomX)
         return heatmapArray
 
@@ -37,7 +39,7 @@ class Heatmap:
             y = self.__roomY - yArray[i]
 
             # create starting point heatmap
-            # starting point is top left corner of map in cm
+            # starting point is top left corner of the map in cm
             startx = int(x - seperateLists['heatmaps']
                          [i]['settings']['xSize'] * 4.8)
             if startx < 0:
@@ -46,11 +48,16 @@ class Heatmap:
                          [i]['settings']['ySize'] * 3.5)
             if starty < 0:
                 startx = 0
+
             # temperatures are collected and placed in a array with the correct dimension
             tempsList = seperateLists['heatmaps'][i]['temps']
+            # make an array out of the list
             tempsArray = np.asarray(tempsList)
+            # reshape to proper dimensions
             tempsArray = tempsArray.reshape(
                 (seperateLists['heatmaps'][i]['settings']['ySize'], seperateLists['heatmaps'][i]['settings']['xSize']))
+
+            # flip the image left-right
             tempsArray = np.fliplr(tempsArray)
 
             # array is enlarged to cm in stead of pixels
