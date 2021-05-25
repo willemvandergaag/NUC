@@ -11,5 +11,9 @@
     "areaLimits":{
         "lowerLimit": 45,
         "upperLimit": 70
+    },
+    "MQTT":{
+        "topic": "17089689",
+        "ip": "192.168.0.107"
     }
 }

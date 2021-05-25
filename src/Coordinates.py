@@ -22,7 +22,7 @@ class Coordinates:
                 'x': sensor.getX()[i],
                 'y': sensor.getY()[i],
                 'id': sensor.getId(),
-                'heatmaps': sensor.getHeatmaps()[0][i]
+                'heatmaps': sensor.getHeatmaps()[i]
             })
 
         return tempXY

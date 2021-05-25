@@ -46,15 +46,16 @@ def on_message(client, userdata, message):
     except:
         return
 
+    # Remove duplicates
     coordinatesWithoutDuplicates = coordinates.removeDuplicates(
         allSensors
     )
 
-    # Remove duplicates
+    # convert object list to multiple lists
     coordinatesToPlot = coordinates.objectListToSeperateList(
         coordinatesWithoutDuplicates
     )
-
+    print(coordinatesToPlot)
     # Draw the image
     plot.draw(coordinatesToPlot, allSensors)
 

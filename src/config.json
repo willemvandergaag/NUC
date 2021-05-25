@@ -49,7 +49,7 @@
         "maxTemp": 80
     },
     "openingHours":{
-        "closingTime": 17,
+        "closingTime": 16,
         "openingTime": 9
     },
     "socialDistancing":{

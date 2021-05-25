@@ -32,19 +32,6 @@ class Config:
     def getSensorYOffset(self):
         return self.__config['sensors']['offset']['y']
 
-    def getSensorOffsets(self, sensorId):
-        # Sensors have a name from 1 upwards, arrays are 0-indexed
-        sensorId = sensorId - 1
-        offsetX = self.__config['locations'][sensorId]['x'] - \
-            self.getSensorXOffset()
-        offsetY = self.__config['locations'][sensorId]['y'] + \
-            self.getSensorYOffset()
-        # the offset is used for the location in the room
-        return {
-            'offsetX': offsetX,
-            'offsetY': offsetY
-        }
-
     def getImage(self, image):
         return self.__config['images'][image]
 

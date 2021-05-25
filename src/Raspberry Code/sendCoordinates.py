@@ -20,6 +20,9 @@ frameHeight = config['sensorPixels']['height']
 upperTempHuman = config['humanTemps']['upperLimit']
 lowerTempHuman = config['humanTemps']['lowerLimit']
 lowerArea = config['areaLimits']['upperLimit']
+topic = config['MQTT']['topic']
+ip = config['MQTT']['ip']
+
 
 # data string to compare
 datastringOld = ''
@@ -48,7 +51,7 @@ while True:
     frame = [int(round(num)) for num in frame]
     # detect dead pixels
     for temp in frame:
-        if temp < -10:
+        if temp == -273:
             temp = 21
     frameTemps = frame
     # reshape frame
@@ -134,7 +137,7 @@ while True:
                 "x": xc[i],
                 "y": yc[i]
                 },
-            "heatmaps": heatmap
+            "heatmaps": heatmap[i]
         })
     
     data = {
@@ -154,7 +157,7 @@ while True:
         while attempts < 60:
             try:
                 # write to MQTT broker
-                publish.single("17089689", datastring, hostname="192.168.0.107")
+                publish.single(topic, datastring, hostname = ip)
                 print("Sensor read and sent in %0.2f s" % (time.monotonic() - stamp))
                 break
             except:
