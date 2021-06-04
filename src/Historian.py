@@ -39,8 +39,8 @@ class Historian:
         coordinatesObject = {
             # get sensor, coordinates and timestamp
             'id': sensorId,
-            'x': x,
-            'y': y,
+            'x': int(x),
+            'y': int(y),
             'timestamp': time.time()
         }
 

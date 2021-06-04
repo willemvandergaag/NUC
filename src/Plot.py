@@ -42,14 +42,22 @@ class Plot:
         plt.pause(0.1)
         self.__cachedBackground = self.__figure.canvas.copy_from_bbox(
             self.__figure.bbox)
+        self.__figure.canvas.manager.set_window_title('Workplace occupation and social distancing monitor ')
         self.__figure.canvas.blit(self.__figure.bbox)
 
     def draw(self, seperateList, sensorList):
         # these elements are loaded every loop
-        self.__plotHumans(seperateList)
-        self.__writeHumanLocations(seperateList)
+        # check if the list is not empty
+        if('x' in seperateList and len(seperateList['x']) > 0):
+            self.__plotHumans(seperateList)
+            self.__writeHumanLocations(seperateList)
+            self.__measureDistancesHumans(seperateList)
+        else:
+            if hasattr(self, '_' + self.__class__.__name__ + '__human'):
+                # sit visibility to false
+                self.__human.set_visible(False)
+
         self.__drawTempAlerts(sensorList)
-        self.__measureDistancesHumans(seperateList)
         self.__figure.canvas.restore_region(self.__cachedBackground)
         # only if hummans are detected
         if hasattr(self, '_' + self.__class__.__name__ + '__human'):
@@ -97,10 +105,6 @@ class Plot:
             (self.__human,) = self.__ax.plot(
                 seperateList['x'], seperateList['y'], 'bX', markersize=12, animated=True)
             self.__human.set_visible(True)
-        else:
-            if hasattr(self, '_' + self.__class__.__name__ + '__human'):
-                # sit visibility to false
-                self.__human.set_visible(False)
 
     def __writeHumanLocations(self, seperateList):
         # Offset creates a new row for every coordinate

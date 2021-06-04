@@ -55,7 +55,7 @@ def on_message(client, userdata, message):
     coordinatesToPlot = coordinates.objectListToSeperateList(
         coordinatesWithoutDuplicates
     )
-    print(coordinatesToPlot)
+    
     # Draw the image
     plot.draw(coordinatesToPlot, allSensors)
 

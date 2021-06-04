@@ -23,7 +23,9 @@ class Heatmap:
 
     def createHeatmap(self, seperateLists):
         heatmapArray = self.__createEmptyMap()
-        heatmapArray = self.__modifyHeatmap(heatmapArray, seperateLists)
+        # check if the list is not empty
+        if('x' in seperateLists and len(seperateLists['x']) > 0):
+            heatmapArray = self.__modifyHeatmap(heatmapArray, seperateLists)
         img = self.__createImageCV(heatmapArray)
         #display heatmap
         cv2.imshow('Heatmap', img)
